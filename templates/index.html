@@ -1,21 +1,36 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Emotion Detector</title>
 </head>
 <body>
     <h1>Emotion Detector</h1>
-    <input type="text" id="textToAnalyze" placeholder="Type here...">
-    <button onclick="analyze()">Analyze</button>
+    <input type="text" id="textToAnalyze" placeholder="Enter text to analyze here...">
+    <button type="button" onclick="analyze()">Analyze Emotion</button>
+    <br><br>
     <div id="system_response"></div>
 
     <script>
         function analyze() {
             let text = document.getElementById("textToAnalyze").value;
-            fetch(`/emotionDetector?textToAnalyze=${text}`)
-                .then(response => response.text())
+            
+            // Tampilkan status loading agar user tahu tombol sudah dipencet
+            document.getElementById("system_response").innerHTML = "Analyzing... please wait.";
+
+            fetch(`/emotionDetector?textToAnalyze=${encodeURIComponent(text)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Server error: ' + response.status);
+                    }
+                    return response.text();
+                })
                 .then(data => {
                     document.getElementById("system_response").innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById("system_response").innerHTML = "Error: " + error.message;
                 });
         }
     </script>
