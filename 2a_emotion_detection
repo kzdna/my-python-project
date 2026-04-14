@@ -1,0 +1,18 @@
+import requests  
+import json
+
+def emotion_detector(text_to_analyse):
+    # URL dari Watson NLP Emotion Analysis Service
+    url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
+    
+    # Header yang diperlukan oleh API
+    header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
+    
+    # Data input dalam format JSON
+    myobj = { "raw_document": { "text": text_to_analyse } }
+    
+    # Membuat request POST ke API
+    response = requests.post(url, json = myobj, headers=header)
+    
+    # Mengembalikan teks dari respon (format string JSON)
+    return response.text
