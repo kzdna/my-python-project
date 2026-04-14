@@ -2,8 +2,8 @@ import requests
 import json
 
 def emotion_detector(text_to_analyse):
-    # URL layanan Watson NLP
-    url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
+    # Pastikan URL-nya persis seperti ini
+url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
     
     # Header untuk model yang digunakan
     header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
