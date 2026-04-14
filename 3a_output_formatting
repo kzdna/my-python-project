@@ -1,0 +1,34 @@
+import requests
+import json
+
+def emotion_detector(text_to_analyse):
+    # URL dan Header untuk Watson NLP Service
+    url = 'https://sn-watson-emotion.labs.skills.network/v1/watson.runtime.nlp.v1/NlpService/EmotionPredict'
+    header = {"grpc-metadata-mm-model-id": "emotion_aggregated-workflow_lang_en_stock"}
+    
+    # Input data
+    myobj = { "raw_document": { "text": text_to_analyse } }
+    
+    # Membuat request POST
+    response = requests.post(url, json = myobj, headers=header)
+    
+    # Mengubah respon teks menjadi dictionary (JSON parsing)
+    formatted_response = json.loads(response.text)
+    
+    # Mengambil data emosi dari struktur JSON yang kompleks
+    emotions = formatted_response['emotionPredictions'][0]['emotion']
+    
+    # Menentukan emosi dengan skor tertinggi (dominant emotion)
+    dominant_emotion = max(emotions, key=emotions.get)
+    
+    # Menyusun output sesuai format yang diminta
+    result = {
+        'anger': emotions['anger'],
+        'disgust': emotions['disgust'],
+        'fear': emotions['fear'],
+        'joy': emotions['joy'],
+        'sadness': emotions['sadness'],
+        'dominant_emotion': dominant_emotion
+    }
+    
+    return result
